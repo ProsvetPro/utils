@@ -1,0 +1,21 @@
+{
+  "name": "reduction-class-name",
+  "version": "1.0.0",
+  "description": "Сокращает названия классов в HTML и CSS до буквенных сочетаний",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "RCN": "index.js"
+  },
+  "keywords": [
+    "reducing",
+    "HTML",
+    "CSS"
+  ],
+  "author": "Prosvet",
+  "license": "SEE LICENSE IN <readme.txt>",
+  "dependencies": {}
+}
