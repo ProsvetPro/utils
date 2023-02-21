@@ -112,7 +112,12 @@ for (let i = 0; i < htmlFiles.length; i++) {
     let end = htmlFiles[i].indexOf(quot, pos + 7);
     
     let betweenQuot = htmlFiles[i].slice(start, end);
-    htmlClasses = htmlClasses.concat(betweenQuot.split(' '));
+    betweenQuot = betweenQuot.split(' ');
+    for (let j = 0; j < betweenQuot.length; j++) {
+      if (!htmlClasses.find(item => item === betweenQuot[j])) {
+        htmlClasses.push(betweenQuot[j]);
+      }
+    }
   }
 }
 
@@ -125,25 +130,37 @@ for (let i = 0; i < htmlClasses.length; i++) {
 
 console.log(shortClasses);
 
-// Замена классов в файлах HTML и CSS 
+// Замена классов в HTML файлах
 // Запись этих файлов
 for (let i = 0; i < htmlFiles.length; i++) {
-  for (let j = 0; j < cssFiles.length; j++) {
-    for (let x = 0; x < htmlClasses.length; x++) {
-      try {
-        htmlFiles[i] = htmlFiles[i].replace(htmlClasses[x], shortClasses[x]);
-        cssFiles[j] = cssFiles[j].replace(htmlClasses[x], shortClasses[x]);
-      } catch {
-        console.error("Всё по пизде");
-        process.exit(4);
-      }
+
+  for (let j = 0; j < htmlClasses; j++) {
+    try {
+      htmlFiles[i] = htmlFiles[i].replaceAll(htmlClasses[j], shortClasses[j]);
+    } catch {
+      console.error("Ошибка записи замены классов");
+      process.exit(4);
     }
-    writeFile(outputCSS[j], cssFiles[j]);
   }
+
   writeFile(outputHTML[i], htmlFiles[i]);
 }
 
+// Замена селекторов в CSS файлах
+// Запись файлов
+for (let i = 0; i < cssFiles.length; i++) {
 
+  for (let j = 0; j < htmlClasses; j++) {
+    try {
+      cssFiles[i] = cssFiles[i].replaceAll(htmlClasses[j], shortClasses[j]);
+    } catch {
+      console.error("Ошибка записи замены классов");
+      process.exit(4);
+    }
+  }
+
+  writeFile(outputCSS[i], cssFiles[i]);
+}
 
 /*
  * Ф У Н К Ц И И 
