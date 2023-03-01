@@ -2,7 +2,8 @@
 
 /*
  *
- * Copyright (c) 2023 Prosvet Computers. All rights reserved.
+ * Copyright (c) 2023 Prosvet Computers.
+ * e-mail: prosvet.dev@ya.ru
  *
  */
 
@@ -17,8 +18,7 @@ var fs = require('fs');
  */
 
 var htmlFiles = [],
-  cssFiles = [], 
-  args = [];
+  cssFiles = [];
 
 var htmlClasses = [],
   cssSelectors = [];
@@ -32,59 +32,45 @@ var shortClasses = [];
 
 /* ИНИЦИАЛИЗАЦИЯ */
 
-if (!process.argv[2]) {
-  console.error("Флаги не введены! \nПопробуйте добавить флаг --help");
-  process.exit(1);
-}
-
-let success = true;
-for (let i = 2; success; i++) {
-  console.log(process.argv[i]);
-
-  if (!process.argv[i]) {
-    success = false;
-    break;
-  }
-  args.push(process.argv[i]);
-}
-
-/*
- * К О Д 
- */
-
 // Анализ введённых аргументов
-for (let i = 0; i < args.length; i++) {
-  switch (args[i]) {
+for (let i = 2; i < process.argv.length; i++) {
+  switch (process.argv[i]) {
     case '--help':
       console.log("Ты думал здесь оказывают помощь?");
       break;
     
     case '--inputHTML':
-      htmlFiles.push(readFile(args[i + 1]));
+      htmlFiles.push(readFile(process.argv[i + 1]));
       i++;
       break;
     
     case '--inputCSS':
-      cssFiles.push(readFile(args[i + 1]));
+      cssFiles.push(readFile(process.argv[i + 1]));
       i++;
       break;
     
     case '--outputHTML':
-      outputHTML.push(args[i + 1]);
+      outputHTML.push(process.argv[i + 1]);
       i++;
       break;
     
     case '--outputCSS':
-      outputCSS.push(args[i + 1]);
+      outputCSS.push(process.argv[i + 1]);
       i++;
       break;
     
     default:
-      console.error("Введёный флаг не существует.\nВведите --help, чтобы пополнить свои познания");
+      console.error("Флаг введён некорректно, либо отсутствует.\nВведите --help, чтобы пополнить свои познания");
       process.exit(2);
       break;
   }
 }
+
+
+/*
+ * К О Д 
+ */
+
 
 // Добавление путей выходных файлов в случае их отсутсвия
 if (!outputHTML.length) {
