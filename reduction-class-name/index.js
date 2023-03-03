@@ -11,7 +11,8 @@
  * М О Д У Л И
  */
 
-var fs = require('fs');
+var fs = require('fs'),
+  path = require('path');
 
 /*
  * П Е Р Е М Е Н Н Ы Е 
@@ -31,6 +32,18 @@ var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 var shortClasses = [];
 
 /* ИНИЦИАЛИЗАЦИЯ */
+
+// var allfiles = fs.readdirSync("./", {withFileTypes: true})
+//   .filter(d => d.isFile())
+//   .map(d => d.name);
+
+console.log(getDir('./'));
+
+// Проверка на наличие введённых данных
+if (!process.argv[2]) {
+  console.error("Комманда введена без флагов!\nПопробуйте добавить --help");
+  process.exit(1);
+}
 
 // Анализ введённых аргументов
 for (let i = 2; i < process.argv.length; i++) {
@@ -60,7 +73,7 @@ for (let i = 2; i < process.argv.length; i++) {
       break;
     
     default:
-      console.error("Флаг введён некорректно, либо отсутствует.\nВведите --help, чтобы пополнить свои познания");
+      console.error("Какой-то из флагов введён некорректно\nВведите --help, чтобы преисполнится в своём познании");
       process.exit(2);
       break;
   }
@@ -70,6 +83,9 @@ for (let i = 2; i < process.argv.length; i++) {
 /*
  * К О Д 
  */
+
+
+// Получение путей файлов в директории
 
 
 // Добавление путей выходных файлов в случае их отсутсвия
@@ -151,6 +167,28 @@ for (let i = 0; i < cssFiles.length; i++) {
 /*
  * Ф У Н К Ц И И 
  */
+
+function getDir(path) {
+  let folderContent = fs.readdirSync(path, {withFileTypes: true});
+
+  let folders = folderContent
+    .filter(obj => obj.isDirectory())
+    .map(obj => obj.name);
+
+  console.log(folders);
+
+  let files = folderContent
+      .filter(obj => obj.isFile())
+      .map(obj => obj.name);
+
+  if (folders.length) {
+    for (let i = 0; i < folders.length; i++) {
+      return getDir(path + '/' + folders[i]).concat(files); 
+    }
+  } else {
+    return files;
+  }
+}
 
 /**
  * Чтение файлов
